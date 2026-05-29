@@ -1,32 +1,58 @@
 package com.ordersprocessing.services;
 
-//============================
-//6. OrderProcessor.java
-//============================
 
-package com.example.demo.batch;
 
-import com.example.demo.model.Order;
+
+import com.ordersprocessing.model.Order;
+import com.ordersprocessing.validations.ValidationStrategy;
+
+import java.util.List;
+
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+
+import com.example.demo.validation.ValidationStrategy;
+
+import org.springframework.batch.item.ItemProcessor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class OrderProcessor
-     implements ItemProcessor<Order, Order> {
+        implements ItemProcessor<Order, Order> {
 
- @Override
- public Order process(Order order) {
+    @Autowired
+    private List<ValidationStrategy> validations;
 
-     if (order.getQuantity() <= 0) {
-         return null;
-     }
 
-     if (order.getProductId() == null
-             || order.getProductId().isBlank()) {
+    public Order process(Order order) {
 
-         return null;
-     }
+        try {
 
-     return order;
- }
+            for(ValidationStrategy validation
+                    : validations) {
+
+                validation.validate(order);
+            }
+
+            return order;
+        }
+
+        catch (com.ordersprocessing.exceptions.InvalidOrderException ex) {
+
+            System.out.println(
+                    "Validation Failed : "
+                            + ex.getMessage());
+
+            return null;
+        }
+
+        
+    }
 }

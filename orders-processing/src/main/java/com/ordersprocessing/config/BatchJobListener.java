@@ -67,7 +67,8 @@ public class BatchJobListener
             String filePath,
             String status) {
 
-        MetadataStore.metadataList
+        MetadataStore
+        .metadataList
                 .stream()
 
                 .filter(meta ->

@@ -9,14 +9,18 @@ public class Order {
 	//
     private String customerId;
     private String productId;
-    private int quantity;
+    private Integer quantity;
     private double price;
     private String timestamp;
-	public String getOrderId() {
-		return orderId;
+	
+	public OrderKey getKey() {
+		return key;
 	}
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
+	public void setKey(OrderKey key) {
+		this.key = key;
+	}
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 	public String getCustomerId() {
 		return customerId;

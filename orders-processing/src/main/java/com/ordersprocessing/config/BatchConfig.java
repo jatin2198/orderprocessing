@@ -112,6 +112,17 @@ public class BatchConfig {
              .processor(processor)
 
              .writer(writer)
+             
+             // resilience
+             .faultTolerant()
+
+             // skip invalid records
+             .skip(InvalidOrderException.class)
+
+           
+
+             // max skipped records
+             .skipLimit(100)
 
              .build();
  }
